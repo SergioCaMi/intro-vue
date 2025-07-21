@@ -1,30 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors Game</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <div id="app">
-        <h1>Rock Paper Scissors Game</h1>
-        <p>Choose your move:</p>
-        <div class="buttons">
-            <button id="rock">&#x1F44A;</button>
-            <button id="paper">&#x1f590;</button>
-            <button id="scissors">&#x270c;</button>
-        </div>
-        <p id="result"><!-- Aquí podrías poner que escoge la IA y el usuario...y si quieres el resultado del juego-->  </p>
-        <p id="scores">
-            Your score: <span id="user-score"></span>
-            Computer score: <span id="computer-score"></span>
-        </p>
+      <h1>Rock Paper Scissors Game</h1>
+      <p>Choose your move:</p>
+      <div class="buttons">
+        <button @click="userChoose('rock')" id="rock">&#x1F44A;</button>
+        <button @click="userChoose('paper')" id="paper">&#x1f590;</button>
+        <button @click="userChoose('scissors')" id="scissors">&#x270c;</button>
+      </div>
+      <p id="result">{{message}}</p>
+      <p id="scores">Your score: <span id="user-score">{{userWins}}</span> Computer score: <span id="computer-score">{{iaWins}}</span></p>
     </div>
+    <script type="module">
+      import { createApp, ref } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 
-</body>
+      createApp({
+        setup() {
+          const iaChoices = ["rock", "paper", "scissors"];
+          const iaRandomChoice = () => {
+            return iaChoices[Math.floor(Math.random() * iaChoices.length)];
+          };
 
+          const message = ref("");
+          const userChoosed = ref("");
+          const iaChoosed = ref("");
+          const whoWin = ref("");
+
+          const userChoose = (choose) => {
+            userChoosed.value = choose;
+            iaChoosed.value = iaRandomChoice();
+            if (userChoosed.value == "rock") {
+              if (iaChoosed.value === "paper") {
+                iaWins.value++;
+                whoWin.value = "and IA Wins!";
+              } else if (iaChoosed.value == "scissors") {
+                userWins.value++;
+                whoWin.value = "and You Win!";
+              } else {
+                whoWin.value = "and you both tied!!";
+              }
+            } else if (userChoosed.value == "paper") {
+              if (iaChoosed.value === "rock") {
+                userWins.value++;
+                whoWin.value = "and You Win!";
+              } else if (iaChoosed.value == "scissors") {
+                iaWins.value++;
+                whoWin.value = "and IA Wins!";
+              } else {
+                whoWin.value = "and you both tied!!";
+              }
+            } else if (userChoosed.value == "scissors") {
+              if (iaChoosed.value === "paper") {
+                userWins.value++;
+                whoWin.value = "and You Win!";
+              } else if (iaChoosed.value == "rock") {
+                iaWins.value++;
+                whoWin.value = "and IA Wins!";
+              } else {
+                whoWin.value = "and you both tied!!";
+              }
+            }
+            message.value = `You chose ${userChoosed.value}, and AI chose ${iaChoosed.value} ${whoWin.value}`;
+          };
+          const userWins = ref(0);
+          const iaWins = ref(0);
+          return {
+            userWins,
+            iaWins,
+            userChoose,
+            userChoosed,
+            iaChoosed,
+            message,
+            whoWin,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
 </html>
