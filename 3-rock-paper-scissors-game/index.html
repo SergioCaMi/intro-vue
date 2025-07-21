@@ -18,69 +18,69 @@
         <button @click="userChoose('scissors')" id="scissors">&#x270c;</button>
       </div>
       <p id="result">{{message}}</p>
-      <p id="scores">Your score: <span id="user-score">{{userWins}}</span> Computer score: <span id="computer-score">{{iaWins}}</span></p>
+      <p id="scores">Your score: <span id="user-score">{{userWins}}</span> Computer score: <span id="computer-score">{{aiWins}}</span></p>
     </div>
     <script type="module">
       import { createApp, ref } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 
       createApp({
         setup() {
-          const iaChoices = ["rock", "paper", "scissors"];
-          const iaRandomChoice = () => {
-            return iaChoices[Math.floor(Math.random() * iaChoices.length)];
+          const aiChoices = ["rock", "paper", "scissors"];
+          const aiRandomChoice = () => {
+            return aiChoices[Math.floor(Math.random() * aiChoices.length)];
           };
 
           const message = ref("");
-          const userChoosed = ref("");
-          const iaChoosed = ref("");
-          const whoWin = ref("");
+          const userChoice = ref("");
+          const aiChoice = ref("");
+          const winner = ref("");
 
           const userChoose = (choose) => {
-            userChoosed.value = choose;
-            iaChoosed.value = iaRandomChoice();
-            if (userChoosed.value == "rock") {
-              if (iaChoosed.value === "paper") {
-                iaWins.value++;
-                whoWin.value = "and IA Wins!";
-              } else if (iaChoosed.value == "scissors") {
+            userChoice.value = choose;
+            aiChoice.value = aiRandomChoice();
+            if (userChoice.value == "rock") {
+              if (aiChoice.value === "paper") {
+                aiWins.value++;
+                winner.value = "and AI Wins!";
+              } else if (aiChoice.value == "scissors") {
                 userWins.value++;
-                whoWin.value = "and You Win!";
+                winner.value = "and You Win!";
               } else {
-                whoWin.value = "and you both tied!!";
+                winner.value = "and you both tied!!";
               }
-            } else if (userChoosed.value == "paper") {
-              if (iaChoosed.value === "rock") {
+            } else if (userChoice.value == "paper") {
+              if (aiChoice.value === "rock") {
                 userWins.value++;
-                whoWin.value = "and You Win!";
-              } else if (iaChoosed.value == "scissors") {
-                iaWins.value++;
-                whoWin.value = "and IA Wins!";
+                winner.value = "and You Win!";
+              } else if (aiChoice.value == "scissors") {
+                aiWins.value++;
+                winner.value = "and AI Wins!";
               } else {
-                whoWin.value = "and you both tied!!";
+                winner.value = "and you both tied!!";
               }
-            } else if (userChoosed.value == "scissors") {
-              if (iaChoosed.value === "paper") {
+            } else if (userChoice.value == "scissors") {
+              if (aiChoice.value === "paper") {
                 userWins.value++;
-                whoWin.value = "and You Win!";
-              } else if (iaChoosed.value == "rock") {
-                iaWins.value++;
-                whoWin.value = "and IA Wins!";
+                winner.value = "and You Win!";
+              } else if (aiChoice.value == "rock") {
+                aiWins.value++;
+                winner.value = "and AI Wins!";
               } else {
-                whoWin.value = "and you both tied!!";
+                winner.value = "and you both tied!!";
               }
             }
-            message.value = `You chose ${userChoosed.value}, and AI chose ${iaChoosed.value} ${whoWin.value}`;
+            message.value = `You chose ${userChoice.value}, and AI chose ${aiChoice.value} ${winner.value}`;
           };
           const userWins = ref(0);
-          const iaWins = ref(0);
+          const aiWins = ref(0);
           return {
             userWins,
-            iaWins,
+            aiWins,
             userChoose,
-            userChoosed,
-            iaChoosed,
+            userChoice,
+            aiChoice,
             message,
-            whoWin,
+            winner,
           };
         },
       }).mount("#app");
